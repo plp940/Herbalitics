@@ -7,6 +7,8 @@ import requests
 from dotenv import load_dotenv
 import os
 
+os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
+
 os.environ["USE_TF"] = "0"
 load_dotenv()
 
