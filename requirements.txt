@@ -1,0 +1,7 @@
+streamlit==1.45.1
+numpy==2.2.6
+faiss-cpu
+sentence-transformers==2.2.2 
+requests
+python-dotenv==1.1.0
+huggingface-hub==0.14.1
