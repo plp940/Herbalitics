@@ -25,7 +25,7 @@ def load_chunks():
 chunks, embeddings, index = load_chunks()
 
 # ---------- EMBEDDING + LLM ----------
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
+#embedder = SentenceTransformer("all-MiniLM-L6-v2")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 HTTP_REFERER = os.getenv("HTTP_REFERER")
 MODEL = "mistralai/mistral-small-3.2-24b-instruct"
