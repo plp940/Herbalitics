@@ -30,11 +30,12 @@ def load_data():
     index = faiss.read_index("faiss_index.index")
     return chunks, sources, embeddings, index
 
+@st.cache_resource
+def load_embedder():
+    from sentence_transformers import SentenceTransformer
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
 chunks, sources, embeddings, index = load_data()
-
-# Embedding model
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
-
 # LLM API
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 HTTP_REFERER = os.getenv("HTTP_REFERER")
@@ -71,6 +72,7 @@ query = st.text_input("📝 Enter your query:", placeholder="e.g., cough, tulsi,
 
 # ---------------- SEARCH & ANSWER ---------------- #
 if query:
+    embedder = load_embedder()  # Lazy-load here
     query_embedding = embedder.encode([query])
     top_k = 5
     D, I = index.search(np.array(query_embedding).astype("float32"), top_k)
