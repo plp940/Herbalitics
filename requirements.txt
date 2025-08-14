@@ -1,9 +1,9 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.0.1
 streamlit==1.38.0
-numpy==2.2.6
+numpy==1.26.4
 faiss-cpu
 sentence-transformers==2.2.2 
 requests
 python-dotenv==1.1.0
 huggingface-hub==0.14.1
+torch==2.0.1
+--extra-index-url https://download.pytorch.org/whl/cpu
