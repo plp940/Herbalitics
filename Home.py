@@ -2,41 +2,43 @@ import streamlit as st
 import numpy as np
 import faiss
 import json
-from sentence_transformers import SentenceTransformer
 import requests
 from dotenv import load_dotenv
 import os
 
+# ---------------- CONFIG ---------------- #
 os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
-
 os.environ["USE_TF"] = "0"
 load_dotenv()
 
-# ---------------- CONFIG ---------------- #
 st.set_page_config(
     page_title="🌿 Ayurveda Assistant",
     layout="wide",
     page_icon="🌱"
 )
 
-# ---------------- LOAD DATA ---------------- #
+# ---------------- LAZY LOAD FUNCTIONS ---------------- #
 @st.cache_resource
 def load_data():
+    """Load chunks, sources, embeddings, and FAISS index lazily."""
     with open("chunks.json", "r", encoding="utf-8") as f:
         chunks = json.load(f)
     with open("chunk_sources.json", "r", encoding="utf-8") as f:
         sources = json.load(f)
-    embeddings = np.load("embeddings.npy")
+
+    # Memory-map embeddings to avoid loading fully into RAM
+    embeddings = np.load("embeddings.npy", mmap_mode="r")
     index = faiss.read_index("faiss_index.index")
+
     return chunks, sources, embeddings, index
 
-chunks, sources, embeddings, index = load_data() 
-# Embedding model 
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
-# LLM API
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-HTTP_REFERER = os.getenv("HTTP_REFERER")
-MODEL = "mistralai/mistral-small-3.2-24b-instruct"
+
+@st.cache_resource
+def load_embedder():
+    """Load the SentenceTransformer model only when needed."""
+    from sentence_transformers import SentenceTransformer
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
 
 # ---------------- SIDEBAR - DOSHA QUIZ ---------------- #
 st.sidebar.header("🧪 Quick Dosha Quiz")
@@ -69,6 +71,11 @@ query = st.text_input("📝 Enter your query:", placeholder="e.g., cough, tulsi,
 
 # ---------------- SEARCH & ANSWER ---------------- #
 if query:
+    # Lazy-load heavy resources only when needed
+    chunks, sources, embeddings, index = load_data()
+    embedder = load_embedder()
+
+    # Search embeddings
     query_embedding = embedder.encode([query])
     top_k = 5
     D, I = index.search(np.array(query_embedding).astype("float32"), top_k)
@@ -91,6 +98,11 @@ Question:
 
 Answer:
 """
+
+    # LLM API
+    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+    HTTP_REFERER = os.getenv("HTTP_REFERER")
+    MODEL = "mistralai/mistral-small-3.2-24b-instruct"
 
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
@@ -117,15 +129,15 @@ Answer:
 
         st.markdown("## ✅ Remedies for You")
         
-        # Split remedies into cards (very basic split for demo)
+        # Split remedies into cards (basic split for demo)
         remedies = answer.split("\n\n")
         cols = st.columns(2)
         img_folder = "plant_images"  # local folder with images named after plant, e.g., tulsi.jpg
         
         for i, rem in enumerate(remedies):
             with cols[i % 2]:
-                st.markdown(f"### 🌱 info {i+1}")
-                # Try to detect plant name in first few words for image match
+                st.markdown(f"### 🌱 Info {i+1}")
+                # Try to detect plant name for image match
                 plant_name = rem.split()[0].lower()
                 img_path = os.path.join(img_folder, f"{plant_name}.jpg")
                 if os.path.exists(img_path):
