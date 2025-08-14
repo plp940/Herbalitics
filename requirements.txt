@@ -1,6 +1,5 @@
-streamlit==1.38.0
-rich==13.7.1
-numpy==1.26.4
+streamlit==1.45.1
+numpy==1.26.4 --index-url https://pypi.org/simple
 faiss-cpu
 sentence-transformers==2.2.2 
 requests
