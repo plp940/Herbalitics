@@ -57,36 +57,34 @@ The project consists of two main files: `Home.py` and `Learning_Hub.py`, which c
 Getting Started
 
 Clone the Repository
-'bash
+```bash
 git clone https://github.com/plp940/Herbalitics.git
 cd Herbalitics
-'
+```
 
 Set up Virtual Environment
-'''
+```bash
 python -m venv venv
 source venv/bin/activate     # Linux/Mac
 venv\Scripts\activate        # Windows Powershell
-'''
+```
 
 Install Dependencies
-'''
+```bash
 pip install -r requirements.txt
-'''
+```
 
 Configure Environment Variables
-'''
 Copy .env.example to .env and set your API keys:
-'''
+```bash
 llm model api key=your_key
 HTTP_REFERER=your_application_url
-'''
+```
 
 Run the Application
-'''
+```bash
 streamlit run Home.py
-'''
-
+```
 How to Use
 
 Remedy Finder (Home.py):
