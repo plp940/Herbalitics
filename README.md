@@ -12,7 +12,7 @@ The Intelligent Learning Hub is a revolutionary AI-powered platform designed to 
 The platform is built using a combination of cutting-edge technologies, including Streamlit for its web-based interface, Sentence Transformers for natural language processing, and FAISS for efficient similarity search. By integrating these technologies, the Intelligent Learning Hub provides a seamless and engaging learning experience that is both fun and informative.
 
 **project live link** https://herbalitics.streamlit.app/
-
+**kaggle notebook** https://www.kaggle.com/code/prasanna468/ayurveda-text/edit
 **🧰 Tech Stack Table**
 ----------------------
 
