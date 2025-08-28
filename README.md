@@ -13,6 +13,7 @@ The platform is built using a combination of cutting-edge technologies, includin
 
 **project live link** https://herbalitics.streamlit.app/  
 **kaggle notebook** https://www.kaggle.com/code/prasanna468/ayurveda-text/edit  
+
 **🧰 Tech Stack Table**
 ----------------------
 
