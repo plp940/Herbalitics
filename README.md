@@ -57,7 +57,7 @@ The project consists of two main files: `Home.py` and `Learning_Hub.py`, which c
 Getting Started
 
 Clone the Repository
-'''
+'''bash
 git clone https://github.com/plp940/Herbalitics.git
 cd Herbalitics
 '''
