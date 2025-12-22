@@ -1,4 +1,4 @@
-**Herbalitics**
+**RAG application for traditional textual data :- Herbalitics**
 ==========================
 
 **Project Title:** Herbalitics
